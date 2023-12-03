@@ -26,7 +26,7 @@ let getResultForSet (set: string) : (int * Ball) array =
         let count, colour = int a.[0], a.[1]
         getGameResult count colour)
 
-let maxSet (results: (int * Ball) array) =
+let getMaximumBallsRequired (results: (int * Ball) array) : Map<Ball, int> =
     let state = [ Red, 0; Green, 0; Blue, 0 ] |> Map.ofList
 
     results
@@ -40,7 +40,9 @@ let results =
     lines
     |> Array.mapi (fun i l -> processString (i + 1) l)
     |> Array.map (fun (game, sets) ->
-        let result = sets |> Array.map getResultForSet |> Array.collect id |> maxSet
+        let result =
+            sets |> Array.map getResultForSet |> Array.collect id |> getMaximumBallsRequired
+
         game, result)
 
 let isPossible gameNumber bag result =
